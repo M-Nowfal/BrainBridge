@@ -1,4 +1,7 @@
-import { createQuiz, deleteQuiz, getQuiz, getQuizResults, submitAttempt, updateQuiz } from "@/controllers/quiz.controller";
+import { 
+  createQuiz, deleteQuiz, getQuiz, 
+  getQuizResults, submitAttempt, updateQuiz 
+} from "../controllers/quiz.controller";
 import express, { Router } from "express";
 
 // Create express route

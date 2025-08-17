@@ -1,4 +1,4 @@
-import { ResourceDocument } from "@/types/resource";
+import { ResourceDocument } from "../types/resource";
 import mongoose, { Schema } from "mongoose";
 
 // -------------------- Schema --------------------

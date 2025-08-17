@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <header className="fixed z-10 w-full top-0 backdrop-blur-xl flex items-center ps-3 md:ps-20 xl:ps-50 py-4 border-b">
+    <header className="fixed z-10 w-full top-0 backdrop-blur-md flex items-center ps-3 md:ps-20 xl:ps-50 py-4 border-b">
       <div className="flex items-center gap-2">
         <GraduationCap className="bg-gradient-to-r from-sky-500 to-emerald-500 rounded-md p-1 size-8" />
         <h1 className="bg-gradient-to-r from-sky-500 to-emerald-500 bg-clip-text text-transparent font-bold text-xl">BrainBridge</h1>

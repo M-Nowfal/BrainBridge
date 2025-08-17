@@ -1,4 +1,4 @@
-import { QuizDocument } from "@/types/quiz";
+import { QuizDocument } from "../types/quiz";
 import mongoose, { Schema } from "mongoose";
 
 // -------------------- Schema --------------------

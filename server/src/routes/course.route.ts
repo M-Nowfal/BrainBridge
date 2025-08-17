@@ -1,4 +1,9 @@
-import { addResource, createCourse, deleteCourse, enrollStudent, getCourse, getCourseProgress, getCourses, postReview, publishCourse, updateCourse } from "@/controllers/course.controller";
+import { 
+  addResource, createCourse, deleteCourse, 
+  enrollStudent, getCourse, getCourseProgress, 
+  getCourses, postReview, publishCourse, 
+  updateCourse 
+} from "../controllers/course.controller";
 import express, { Router } from "express";
 
 // Create express route

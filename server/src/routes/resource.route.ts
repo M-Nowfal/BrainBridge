@@ -1,4 +1,7 @@
-import { deleteResource, getCourseResources, getResource, updateResource, uploadResource } from "@/controllers/resource.controller";
+import { 
+  deleteResource, getCourseResources, getResource, 
+  updateResource, uploadResource 
+} from "../controllers/resource.controller";
 import express, { Router } from "express";
 
 // Create express route

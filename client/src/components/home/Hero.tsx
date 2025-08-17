@@ -13,7 +13,7 @@ const Hero = () => {
           Transform Your Learning Journey
         </h1>
         <div className="sm:hidden flex justify-center mb-8">
-          <Button size="lg" variant="outline" className="bg-gradient-to-r from-sky-600/20 to-emerald-500/20 animate-bounce hover:scale-110 hover:from-emerald-500/50 hover:to-sky-500/50">
+          <Button size="lg" variant="outline" className="bg-gradient-to-r from-sky-600 to-emerald-500/20 animate-bounce hover:scale-110 hover:from-emerald-500 hover:to-sky-500">
             Get Started
           </Button>
         </div>

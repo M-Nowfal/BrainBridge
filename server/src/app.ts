@@ -25,7 +25,7 @@ app.use("/api/course", courseRoutes);
 app.use("/api/quiz", quizRoutes);
 app.use("/api/resource", resourceRoutes);
 
-// Server Error
+// Handle Server Error
 app.use((err: unknown, _req: Request, res: Response, next: NextFunction) => {
   const error = err instanceof Error ? err.message : String(err);
   res.status(500).json({ message: "Internal Server Error", error });

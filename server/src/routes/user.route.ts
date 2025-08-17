@@ -3,7 +3,7 @@ import {
   getUserProfile, loginUser, markCourseComplete,
   registerUser, updatePassword, updateTheme,
   updateUserProfile, verifyUser
-} from "@/controllers/user.controller";
+} from "../controllers/user.controller";
 import express, { Router } from "express";
 
 // Create express route
