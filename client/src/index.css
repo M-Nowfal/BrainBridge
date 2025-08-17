@@ -119,12 +119,28 @@
   }
 }
 
+/* Light theme selection */
 ::selection {
   background: black;
-  color: aliceblue;
+  color: white;
 }
 
 ::-moz-selection {
   background: black;
-  color: aliceblue;
+  color: white;
+}
+
+/* Dark theme selection */
+.dark ::selection {
+  background: white;
+  color: black;
+}
+
+.dark ::-moz-selection {
+  background: white;
+  color: black;
+}
+
+html, body {
+  overflow-x: hidden;
 }

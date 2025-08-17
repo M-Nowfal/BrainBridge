@@ -65,7 +65,7 @@ BrainBridge/
 │   ├── src/
 │   │   ├── components/ # Reusable UI components
 │   │   ├── pages/      # Routes & views
-│   │   ├── store/      # State management (slices, store)
+│   │   ├── store/      # State management (slices,store)
 │   │   └── utils/      # Helpers & config
 │
 │── server/             # Express backend
