@@ -81,9 +81,9 @@ const MotionRight = ({ immediate = false, ...props }) => {
 const MotionScale = ({ immediate = false, ...props }) => {
   return (
     <motion.div 
-      initial={{ scale: 0.8 }}
+      initial={{ scale: 0.9 }}
       animate={{ scale: 1 }}
-      transition={{ duration: 0.2, ease: "easeIn" }}
+      transition={{ duration: 0.2, ease: "easeInOut" }}
       {...props}
     />
   );

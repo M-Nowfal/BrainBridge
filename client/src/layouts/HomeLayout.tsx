@@ -32,14 +32,14 @@ const Navbar = () => {
       >
         <div className="flex items-center gap-3 pe-10 md:pe-20 xl:pe-42">
           {/* Sign In button (always visible) */}
-          <Link to="/login">
+          <Link to="/auth/login">
             <Button variant="ghost">
               Sign In
             </Button>
           </Link>
 
           {/* Get Started button (hidden on small screens for cleaner UI) */}
-          <Link to="/register">
+          <Link to="/auth/register">
             <Button
               variant="secondary"
               className="hidden sm:block bg-gradient-to-r from-sky-600 to-emerald-500"

@@ -32,7 +32,7 @@ const Slogan = () => {
         <Button
           variant="themed"
           className="group w-2xs font-semibold text-lg py-6 hover:scale-103 transition-all duration-300 hover:shadow-md hover:from-sky-700 hover:to-emerald-600"
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/auth/register")}
         >
           Start Your Journey
           <ArrowRight className="size-5 mt-1 ms-2 group-hover:scale-120 group-hover:translate-x-4 transition-all duration-300" />

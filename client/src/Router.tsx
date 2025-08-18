@@ -2,8 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import PageNotFound from "./pages/PageNotFound";
 import HomeLayout from "./layouts/HomeLayout";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import Register from "./pages/auth/Register";
+import Login from "./pages/auth/Login";
+import AuthLayout from "./layouts/AuthLayout";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 // Application-level routing configuration
 const Router = () => {
@@ -16,8 +18,15 @@ const Router = () => {
         { index: true, element: <Home /> }, // Default route -> Home page
       ],
     },
-    { path: "/register", element: <Register /> }, // Registration page
-    { path: "/login", element: <Login /> },       // Login page
+    {
+      path: "/auth",
+      element: <AuthLayout />,
+      children: [
+        { path: "register", element: <Register /> }, // Registration page
+        { path: "login", element: <Login /> },       // Login page
+        { path: "resetpwd", element: <ResetPassword /> },       // Reset Password page
+      ],
+    },
     { path: "*", element: <PageNotFound /> },     // Catch-all for undefined routes
   ]);
 
