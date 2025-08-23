@@ -34,9 +34,8 @@ const PageNotFound = () => {
       <MotionUp immediate className="mt-6">
         <Link to={"/"}>
           <Button
-            variant="outline"
+            variant="themed"
             size="lg"
-            className="bg-gradient-to-t from-emerald-500 to-sky-600"
           >
             Back to Home
           </Button>

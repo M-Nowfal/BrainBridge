@@ -4,7 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
+import axios from "axios";
+import { matchPassword, passwordLen, validateEmail, validPassword } from "@/helpers/formValidation";
 
 type RegisterType = {
   name: string,
@@ -34,8 +36,11 @@ const Register = () => {
     name: "", email: "", password: "", confirm_pwd: "", terms_condition: false
   });
 
-  // State to toggle password visibility
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);  // State to toggle password visibility
+  const [errorMessage, setErrorMessage] = useState<any>("");      // State to show error message
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigator: NavigateFunction = useNavigate();
+
 
   /**
    * handleInputs
@@ -51,15 +56,40 @@ const Register = () => {
     }
   }
 
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      validation();
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, credentials);
+      if (res.status === 201) {
+        navigator("/dashboard", { state: { role: ``, /*some details*/ } });
+      }
+    } catch (err: unknown) {
+      setErrorMessage(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Scrolls the page little up
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
 
+  const validation = () => {
+    validateEmail(credentials.email);
+    passwordLen(credentials.password);
+    validPassword(credentials.password);
+    matchPassword(credentials.password, credentials.confirm_pwd);
+  };
+
   return (
     // Form container with scaling animation
     <MotionScale immediate>
-      <form className="flex flex-col items-center space-y-7 justify-center min-h-svh">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center space-y-7 justify-center min-h-svh">
         <Card className="w-[95%] max-w-lg lg:max-w-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Create Your Account</CardTitle>
@@ -84,6 +114,9 @@ const Register = () => {
                 className="ps-10 py-5"
                 required
               />
+              {errorMessage.cause === "name" && <p className="text-red-500 text-sm mt-2">
+                {errorMessage.message}
+              </p>}
             </div>
 
             {/* Email Field */}
@@ -100,6 +133,9 @@ const Register = () => {
                 className="ps-10 py-5"
                 required
               />
+              {errorMessage.cause === "email" && <p className="text-red-500 text-sm  tm-2">
+                {errorMessage.message}
+              </p>}
             </div>
 
             {/* Password Field with toggle visibility */}
@@ -115,6 +151,9 @@ const Register = () => {
                 className="ps-10 py-5"
                 required
               />
+              {errorMessage.cause === "password" && <p className="text-red-500 text-sm mt-2">
+                {errorMessage.message}
+              </p>}
               <Button
                 type="button"
                 variant="ghost"
@@ -145,6 +184,9 @@ const Register = () => {
                 className="ps-10 py-5"
                 required
               />
+              {errorMessage.cause === "confirmpassword" && <p className="text-red-500 text-sm mt-2">
+                {errorMessage.message}
+              </p>}
             </div>
 
             {/* Terms & Conditions Agreement */}
@@ -158,6 +200,9 @@ const Register = () => {
                 className="size-4 cursor-pointer accent-black dark:accent-emerald-300"
                 required
               />
+              {errorMessage.cause === "required" && <p className="text-red-500 text-sm mt-2">
+                {errorMessage.message}
+              </p>}
               <CardTitle className="text-sm">
                 I agree to the&nbsp;
                 <span className="hover:underline hover:underline-offset-2 text-sky-600 cursor-pointer">
@@ -176,13 +221,13 @@ const Register = () => {
             <div className="flex flex-col gap-5 lg:flex-row-reverse">
               <Button
                 variant="themed"
-                className="text-lg py-6 hover:scale-103 lg:flex-1"
+                className="text-lg py-6 lg:flex-1"
               >
-                Create Account
+                {loading ? "Creating..." : "Create Account"}
               </Button>
               <Link
                 to={"/"}
-                className="lg:flex-1 text-lg py-2 rounded-md hover:scale-103 text-center border font-semibold transition-all duration-200 hover:border-gray-500"
+                className="lg:flex-1 text-lg py-2 rounded-md text-center border font-semibold transition-all duration-200 hover:border-gray-500"
               >
                 Cancel
               </Link>

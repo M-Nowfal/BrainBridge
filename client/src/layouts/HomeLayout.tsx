@@ -41,8 +41,8 @@ const Navbar = () => {
           {/* Get Started button (hidden on small screens for cleaner UI) */}
           <Link to="/auth/register">
             <Button
-              variant="secondary"
-              className="hidden sm:block bg-gradient-to-r from-sky-600 to-emerald-500"
+              variant="themed"
+              className="hidden sm:block"
             >
               Get Started
             </Button>

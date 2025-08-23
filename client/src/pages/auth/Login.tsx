@@ -93,7 +93,7 @@ const Login = () => {
             <Button
               type="submit"
               variant="themed"
-              className="text-lg py-6 hover:scale-103"
+              className="text-lg py-6"
             >
               Sign In
             </Button>
@@ -101,7 +101,7 @@ const Login = () => {
             {/* Cancel action → back to home */}
             <Link
               to={"/"}
-              className="text-lg py-2 rounded-md hover:scale-103 text-center border font-semibold transition-all duration-200 hover:border-gray-500"
+              className="text-lg py-2 rounded-md text-center border font-semibold transition-all duration-200 hover:border-gray-500"
             >
               Cancel
             </Link>

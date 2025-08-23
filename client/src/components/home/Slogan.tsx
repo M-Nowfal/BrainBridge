@@ -27,11 +27,11 @@ const Slogan = () => {
         </p>
       </MotionUp>
 
-      {/* CTA button -> Navigates to Register page */}
+      {/* Navigates to Register page */}
       <MotionUp>
         <Button
           variant="themed"
-          className="group w-2xs font-semibold text-lg py-6 hover:scale-103 transition-all duration-300 hover:shadow-md hover:from-sky-700 hover:to-emerald-600"
+          className="group w-2xs font-semibold text-lg py-6 hover:scale-103 hover:shadow-md"
           onClick={() => navigate("/auth/register")}
         >
           Start Your Journey
