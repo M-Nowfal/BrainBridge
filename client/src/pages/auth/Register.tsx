@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
 import axios from "axios";
-import { matchPassword, passwordLen, validateEmail, validPassword } from "@/helpers/formValidation";
+import { isValidationError, matchPassword, passwordLen, validateEmail, validateUsername, validPassword } from "@/helpers/formValidation";
 
 type RegisterType = {
   name: string,
@@ -16,46 +16,35 @@ type RegisterType = {
   terms_condition: boolean
 };
 
-/**
- * Register Component
- * ------------------
- * A registration form that allows users to:
- *  - Provide full name, email, and password (with confirmation).
- *  - Toggle password visibility for better UX.
- *  - Accept Terms of Service and Privacy Policy.
- * 
- * UI Enhancements:
- *  - Animated scaling effect on load.
- *  - Theme toggle for light/dark mode.
- *  - Accessible labels and placeholders.
- */
+// Register Component
 const Register = () => {
-
   // State to manage user credentials & terms agreement
   const [credentials, setCredentials] = useState<RegisterType>({
     name: "", email: "", password: "", confirm_pwd: "", terms_condition: false
   });
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);  // State to toggle password visibility
-  const [errorMessage, setErrorMessage] = useState<any>("");      // State to show error message
+  // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  // State to show error message
+  const [errorMessage, setErrorMessage] = useState<any>("");
+
   const [loading, setLoading] = useState<boolean>(false);
+  const refs = useRef<Record<string, HTMLInputElement | null>>({});
   const navigator: NavigateFunction = useNavigate();
 
-
-  /**
-   * handleInputs
-   * Dynamically updates form fields in state.
-   * Special handling for the checkbox (terms_condition).
-   */
+  // Dynamically updates form fields in state
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setErrorMessage("");
     if (name !== "terms_condition") {
       setCredentials(prev => ({ ...prev, [name]: value }));
     } else {
       setCredentials(prev => ({ ...prev, [name]: !prev[name] }));
     }
-  }
+  };
 
+  // Handles form submission
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -67,17 +56,20 @@ const Register = () => {
       }
     } catch (err: unknown) {
       setErrorMessage(err);
+      if (isValidationError(err)) {
+        const field = err.cause;
+        if (field && refs.current[field]) {
+          refs.current[field]?.focus();
+        }
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Scrolls the page little up
-  useEffect(() => {
-    window.scrollTo({ top: 0 });
-  }, []);
-
+  // Validation logic
   const validation = () => {
+    validateUsername(credentials.name);
     validateEmail(credentials.email);
     passwordLen(credentials.password);
     validPassword(credentials.password);
@@ -89,8 +81,8 @@ const Register = () => {
     <MotionScale immediate>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center space-y-7 justify-center min-h-svh">
-        <Card className="w-[95%] max-w-lg lg:max-w-2xl">
+        className="flex flex-col items-center justify-center min-h-svh">
+        <Card className="w-[95%] max-w-xl lg:max-w-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Create Your Account</CardTitle>
             <CardDescription className="text-md">
@@ -99,19 +91,20 @@ const Register = () => {
           </CardHeader>
 
           <CardContent className="flex flex-col gap-7">
-
             {/* Full Name Field */}
             <div className="flex flex-col gap-3 relative">
               <CardTitle>Full Name</CardTitle>
               <User className="absolute text-muted-foreground size-4 top-10.5 left-3" />
               <Input
                 placeholder="Enter your full name"
+                ref={(el) => { refs.current["name"] = el }}
                 name="name"
                 autoComplete="name"
                 type="text"
                 value={credentials.name}
                 onChange={handleInputs}
                 className="ps-10 py-5"
+                autoFocus
                 required
               />
               {errorMessage.cause === "name" && <p className="text-red-500 text-sm mt-2">
@@ -125,6 +118,7 @@ const Register = () => {
               <Mail className="absolute text-muted-foreground size-4 top-10.5 left-3" />
               <Input
                 placeholder="Enter your email"
+                ref={(el) => { refs.current["email"] = el }}
                 name="email"
                 autoComplete="email"
                 type="email"
@@ -144,6 +138,7 @@ const Register = () => {
               <Lock className="absolute text-muted-foreground size-4 top-10.5 left-3" />
               <Input
                 placeholder="Create a password"
+                ref={(el) => { refs.current["password"] = el }}
                 name="password"
                 type={showPassword ? "text" : "password"}
                 value={credentials.password}
@@ -176,6 +171,7 @@ const Register = () => {
               <Lock className="absolute text-muted-foreground size-4 top-10.5 left-3" />
               <Input
                 placeholder="Re-enter your password"
+                ref={(el) => { refs.current["confirm_pwd"] = el }}
                 name="confirm_pwd"
                 id="confirm_pwd"
                 type="password"
@@ -184,7 +180,7 @@ const Register = () => {
                 className="ps-10 py-5"
                 required
               />
-              {errorMessage.cause === "confirmpassword" && <p className="text-red-500 text-sm mt-2">
+              {errorMessage.cause === "confirm_pwd" && <p className="text-red-500 text-sm mt-2">
                 {errorMessage.message}
               </p>}
             </div>
@@ -200,9 +196,6 @@ const Register = () => {
                 className="size-4 cursor-pointer accent-black dark:accent-emerald-300"
                 required
               />
-              {errorMessage.cause === "required" && <p className="text-red-500 text-sm mt-2">
-                {errorMessage.message}
-              </p>}
               <CardTitle className="text-sm">
                 I agree to the&nbsp;
                 <span className="hover:underline hover:underline-offset-2 text-sky-600 cursor-pointer">

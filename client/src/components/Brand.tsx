@@ -1,17 +1,6 @@
 import { GraduationCap } from "lucide-react";
 
-/**
- * Brand Component
- *
- * Renders the BrainBridge brand logo with a graduation cap icon
- * and a gradient-styled title.
- *
- * @param size - Controls the Tailwind scale utility for resizing
- *               the entire brand component. Defaults to "100".
- *
- * Example:
- * <Brand size="125" />
- */
+// Brand Component
 const Brand = ({
   size = "100",
 }: {

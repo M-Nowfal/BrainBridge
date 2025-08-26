@@ -4,14 +4,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { MotionUp } from "@/components/ui/animate";
 import Brand from "@/components/Brand";
 
-/**
- * PageNotFound Component
- * ----------------------
- * Renders a clean and animated 404 page with:
- *  - A theme toggle for light/dark mode
- *  - Animated illustrations/messages using MotionUp
- *  - A redirect button guiding users back to the homepage
- */
+// PageNotFound Component
 const PageNotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-svh text-center px-4">

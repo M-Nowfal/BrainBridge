@@ -1,10 +1,6 @@
-/**
- * ✅ Validates the password length.
- * Password must be between 6 and 15 characters.
- * 
- * @param password - The password string to validate.
- * @returns true if valid, otherwise throws an Error.
- */
+import type { AppError, ValidationError } from "@/types/error";
+
+// Validate password length (6–15)
 export const passwordLen = (password: string): boolean => {
   if (password.length >= 6 && password.length <= 15) {
     return true;
@@ -12,18 +8,9 @@ export const passwordLen = (password: string): boolean => {
   throw new Error("Password should be between 6 and 15 characters.", { cause: "password" });
 };
 
-/**
- * ✅ Validates if the password contains at least:
- * - One uppercase letter
- * - One lowercase letter
- * - One number
- * - One special character
- * 
- * @param password - The password string to validate.
- * @returns true if valid, otherwise throws an Error.
- */
+// Validate password complexity
 export const validPassword = (password: string): boolean => {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#()\/+.\-])[A-Za-z\d@$!%*?&#()\/+.\-]+$/;
 
   if (regex.test(password)) {
     return true;
@@ -34,13 +21,7 @@ export const validPassword = (password: string): boolean => {
   );
 };
 
-/**
- * ✅ Validates if the given email is in proper format.
- * Uses a regex for general email validation.
- * 
- * @param email - The email string to validate.
- * @returns true if valid, otherwise throws an Error.
- */
+// Validate email format
 export const validateEmail = (email: string): boolean => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -50,13 +31,7 @@ export const validateEmail = (email: string): boolean => {
   throw new Error("Invalid email format. Example: user@example.com", { cause: "email" });
 };
 
-/**
- * ✅ Validates if password and confirmPassword match.
- * 
- * @param password - The original password.
- * @param confirmPassword - The repeated password input.
- * @returns true if they match, otherwise throws an Error.
- */
+// Check if passwords match
 export const matchPassword = (
   password: string,
   confirmPassword: string
@@ -64,39 +39,31 @@ export const matchPassword = (
   if (password === confirmPassword) {
     return true;
   }
-  throw new Error("Confirm Password does not match the original password.", { cause: "confirmpassword" });
+  throw new Error("Confirm Password does not match the original password.", { cause: "confirm_pwd" });
 };
 
-/**
- * ✅ Validates if a required field is not empty.
- * Useful for inputs like name, username, etc.
- * 
- * @param value - The string to validate.
- * @param fieldName - The name of the field for error messages.
- * @returns true if not empty, otherwise throws an Error.
- */
+// Validate required field
 export const requiredField = (value: string, fieldName: string): boolean => {
   if (value.trim().length > 0) {
     return true;
   }
-  throw new Error(`${fieldName} is required.`, { cause: "required" });
+  throw new Error(`${fieldName} is required.`, { cause: "requiredfield" });
 };
 
-/**
- * ✅ Validates if a username is between 3 and 20 characters
- * and contains only letters, numbers, underscores, or dots.
- * 
- * @param username - The username string to validate.
- * @returns true if valid, otherwise throws an Error.
- */
+// Validate username (3–20 chars, letters, spaces, dots)
 export const validateUsername = (username: string): boolean => {
-  const regex = /^[a-zA-Z0-9._]{3,20}$/;
+  const regex = /^[a-zA-Z.\s+]{3,20}$/;
 
   if (regex.test(username)) {
     return true;
   }
   throw new Error(
-    "Username must be 3-20 characters and can only contain letters, numbers, underscores, and dots.",
+    "Username must be 3-20 characters and can only contain letters, white spaces and dots.",
     { cause: "name" }
   );
 };
+
+// Type guard for ValidationError
+export function isValidationError(err: AppError): err is ValidationError {
+  return typeof err === "object" && err !== null && "cause" in err;
+}

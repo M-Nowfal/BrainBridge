@@ -1,21 +1,11 @@
 import { ArrowRight, Play } from "lucide-react";
-// Icon components for visual cues (arrow + play button)
-
 import { Badge } from "../ui/badge";
-// Reusable badge component for highlighting text
-
 import { Button } from "../ui/button";
-// Custom button component with variants (themed/outline/etc.)
-
 import { useNavigate, type NavigateFunction } from "react-router-dom";
-// React Router hook for programmatic navigation between pages
-
 import { MotionUp } from "../ui/animate";
-// Motion wrapper for entry animation (fade/slide up)
 
 const Hero = () => {
-  // React Router navigation handler
-  const navigate: NavigateFunction = useNavigate();
+  const navigate: NavigateFunction = useNavigate(); // React Router navigation handler
 
   return (
     // Animate the whole Hero section when it mounts
@@ -33,7 +23,7 @@ const Hero = () => {
             Transform Your Learning Journey
           </h1>
 
-          {/* Mobile-only CTA button (visible on small screens) */}
+          {/* Mobile-only (visible on small screens) */}
           <div className="sm:hidden flex justify-center mb-8">
             <Button 
               size="lg" 
@@ -80,4 +70,3 @@ const Hero = () => {
 };
 
 export default Hero;
-// Hero section: Highlights platform value, tagline, and provides primary/secondary CTAs

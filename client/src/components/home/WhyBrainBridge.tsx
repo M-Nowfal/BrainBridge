@@ -2,16 +2,9 @@ import { Award, BookOpen, Shield, TrendingUp, Users, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 import { MotionUp } from "../ui/animate";
 
-/**
- * WhyBrainBridge Section
- * -----------------------
- * Highlights the key advantages of using BrainBridge.
- * Uses a feature grid layout with icons, titles, and descriptions
- * to clearly communicate the platform’s value propositions.
- */
+// WhyBrainBridge Section
 const WhyBrainBridge = () => {
-  // Shared style for icons (color + hover transition)
-  const iconStyle = "text-sky-500 group-hover:text-white transition-all duration-300";
+  const iconStyle = "text-sky-500 group-hover:text-white transition-all duration-300"; // Shared style for icons (color + hover transition)
 
   // Feature list (could be easily mapped or extended)
   const choose_brain_bridge = [

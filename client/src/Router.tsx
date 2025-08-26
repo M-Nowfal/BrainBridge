@@ -6,6 +6,10 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import AuthLayout from "./layouts/AuthLayout";
 import ResetPassword from "./pages/auth/ResetPassword";
+import VerifyOTP from "./pages/auth/VerifyOTP";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import DashboardLayout from "./layouts/DashboardLayout";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 // Application-level routing configuration
 const Router = () => {
@@ -22,9 +26,18 @@ const Router = () => {
       path: "/auth",
       element: <AuthLayout />,
       children: [
-        { path: "register", element: <Register /> }, // Registration page
-        { path: "login", element: <Login /> },       // Login page
-        { path: "resetpwd", element: <ResetPassword /> },       // Reset Password page
+        { path: "register", element: <Register /> },              // Registration page
+        { path: "login", element: <Login /> },                    // Login page
+        { path: "forgot-password", element: <ForgotPassword /> }, // Forgot Password page
+        { path: "reset-password", element: <ResetPassword /> },   // Reset Password page
+        { path: "verify-otp", element: <VerifyOTP /> },           // OTP Verification page
+      ],
+    },
+    {
+      path: "/dashboard",
+      element: <DashboardLayout />,
+      children: [
+        { index: true, element: <Dashboard /> },
       ],
     },
     { path: "*", element: <PageNotFound /> },     // Catch-all for undefined routes

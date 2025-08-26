@@ -3,12 +3,7 @@ import { Button } from "../ui/button";
 import { useNavigate, type NavigateFunction } from "react-router-dom";
 import { MotionUp } from "../ui/animate";
 
-/*
-   * Slogan Section
-   * ----------------
-   * Highlights a motivational call-to-action (CTA) with animated text and 
-   * a button that navigates users to the registration page.
- */
+// Slogan Section
 const Slogan = () => {
   const navigate: NavigateFunction = useNavigate();
 

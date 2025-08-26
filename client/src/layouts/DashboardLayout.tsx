@@ -1,17 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Brand from "@/components/Brand";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-const AuthLayout = () => {
+const DashboardLayout = () => {
 
   return (
     <>
       <div className="flex fixed items-center justify-between border-b p-4 top-0 w-full backdrop-blur-2xl z-10">
-        <Button variant="ghost" onClick={() => window.history.back()}>
-          <ArrowLeft />
-        </Button>
         <Brand size="150" />
         <ThemeToggle />
       </div>
@@ -22,4 +17,4 @@ const AuthLayout = () => {
   );
 }
 
-export default AuthLayout;
+export default DashboardLayout;

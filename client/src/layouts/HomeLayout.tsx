@@ -4,19 +4,7 @@ import { MotionLeft, MotionRight } from "@/components/ui/animate";
 import { Button } from "@/components/ui/button";
 import { Link, Outlet } from "react-router-dom";
 
-/**
- * Navbar Component
- * ----------------
- * - Fixed navigation bar displayed at the top of the page.
- * - Includes:
- *   • Brand (logo + title)
- *   • Navigation actions (Sign In, Get Started)
- *   • Theme toggle switch (light/dark mode)
- *
- * Notes:
- * - Uses MotionLeft & MotionRight for entry animations.
- * - Responsive: "Get Started" button is hidden on small screens.
- */
+// Navbar Component
 const Navbar = () => {
   return (
     <header className="fixed z-10 w-full top-0 backdrop-blur-md flex items-center ps-3 md:ps-20 xl:ps-50 py-4 border-b">
@@ -56,13 +44,7 @@ const Navbar = () => {
   );
 };
 
-/**
- * Footer Component
- * ----------------
- * - Displays brand + site tagline.
- * - Responsive layout (stacked on mobile, row on desktop).
- * - Animations applied for subtle entrance effects.
- */
+// Footer Component
 const Footer = () => {
   return (
     <footer className="py-12 p-5 border-t">
@@ -83,15 +65,7 @@ const Footer = () => {
   );
 };
 
-/**
- * HomeLayout Component
- * --------------------
- * - Defines the page structure for public routes.
- * - Includes:
- *   • Navbar (top navigation)
- *   • Outlet (dynamic child route content)
- *   • Footer (site-wide branding & message)
- */
+// HomeLayout Component
 const HomeLayout = () => {
   return (
     <>

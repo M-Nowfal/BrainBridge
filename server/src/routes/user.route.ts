@@ -1,8 +1,8 @@
 import {
   bookmarkItem, enrollCourse, getNotifications,
   getUserProfile, loginUser, markCourseComplete,
-  registerUser, updatePassword, updateTheme,
-  updateUserProfile, verifyUser
+  registerUser, sendOTP, updatePassword, updateTheme,
+  updateUserProfile, verifyOTP, verifyUser
 } from "../controllers/user.controller";
 import express, { Router } from "express";
 
@@ -10,6 +10,8 @@ import express, { Router } from "express";
 const userRoutes: Router = express.Router();
 
 // User routes
+userRoutes.route("/send-otp/:action").post(sendOTP);
+userRoutes.route("/verify-otp").post(verifyOTP);
 userRoutes.route("/register").post(registerUser);
 userRoutes.route("/login").post(loginUser);
 userRoutes.route("/:id").get(getUserProfile).put(updateUserProfile).patch(updatePassword);

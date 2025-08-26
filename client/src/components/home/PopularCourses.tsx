@@ -1,15 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// UI components for layout consistency (card, button, etc.)
-
 import { ArrowRight, Clock, GraduationCap, Star } from "lucide-react";
-// Icons used for course details and actions
-
 import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
-// React Router: navigation + linking
-
 import { MotionUp } from "@/components/ui/animate";
-// Animation wrapper for entry effects
 
 const PopularCourses = () => {
   const navigate: NavigateFunction = useNavigate();
@@ -154,4 +147,3 @@ const PopularCourses = () => {
 };
 
 export default PopularCourses;
-// Displays a grid of featured courses with thumbnail, instructor, rating, price, and CTA
