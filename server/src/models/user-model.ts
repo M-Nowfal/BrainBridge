@@ -5,7 +5,7 @@ import { UserDocument } from "../types/user";
 const userSchema: Schema<UserDocument> = new mongoose.Schema({
   name: { type: String, trim: true, required: true },
   email: { type: String, trim: true, required: true, unique: true },
-  phone: { type: String, trim: true, required: true, unique: true },
+  phone: { type: String, trim: true, unique: true, default: "" },
   password: { type: String, required: true },
   avatar: { type: String, default: "" },
   role: { type: String, enum: ["student", "instructor", "admin"], default: "student" },
@@ -35,7 +35,7 @@ const userSchema: Schema<UserDocument> = new mongoose.Schema({
     read: { type: Boolean, default: false },
     date: { type: Date, default: Date.now }
   }],
-  themePreference: { type: String, enum: ["light", "dark"], default: "light" },
+  themePrefered: { type: String, enum: ["light", "dark", "system"], default: "dark" },
   isVerified: { type: Boolean, default: false },
   status: { type: String, enum: ["active", "inactive", "banned"], default: "active" },
   lastLogin: { type: Date },

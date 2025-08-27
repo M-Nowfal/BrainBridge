@@ -9,5 +9,5 @@ const otpSchema = new Schema<OTPDocument>({
 });
 
 // -------------------- Model --------------------
-const OTPModel = models.OTP || model<OTPDocument>("OTP", otpSchema);
-export default OTPModel;
+const OTP = models.OTP || model<OTPDocument>("OTP", otpSchema);
+export default OTP;

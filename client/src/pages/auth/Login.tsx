@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { isValidationError, passwordLen, validateEmail } from "@/helpers/formValidation";
-import axios from "axios";
+import { useAppSelector } from "@/hooks/useStore";
+import axios, { AxiosError } from "axios";
 import { AlertCircle, Eye, EyeOff, Lock, Mail } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
+import { toast } from "sonner";
 
 // Define structure for login form credentials
 type LoginType = {
@@ -23,6 +25,8 @@ const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
+  const user = useAppSelector(state => state.user);
+
   const navigator: NavigateFunction = useNavigate();
   // Handle form input updates dynamically
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +34,13 @@ const Login = () => {
     setErrorMessage({ message: "", cause: "" });
     setCredentials(prev => ({ ...prev, [name]: value }));
   };
+
+  // Navigate to dashboard if user already logged-in
+  useEffect(() => {
+    if (user.id) {
+      navigator("/dashboard");
+    }
+  }, []);
 
   // Handles form submission
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -40,14 +51,20 @@ const Login = () => {
       if (!credentials.password.trim()) throw new Error("Password is required.", { cause: "password" });
       passwordLen(credentials.password);
       setErrorMessage({ message: "", cause: "" });
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/login`, credentials);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, credentials);
       if (res.status === 200) {
-        navigator("/dashboard", { state: { role: res.data.role, /*some details*/ } });
+        window.localStorage.setItem("user", JSON.stringify({ id: res.data.userid }));
+        toast.success(res.data.message);
+        navigator("/dashboard", { state: { authorized: true } });
       }
     } catch (err: unknown) {
       if (isValidationError(err)) {
         err.cause === "email" ? emailRef.current?.focus() : passwordRef.current?.focus();
         setErrorMessage(err);
+      } else if (err instanceof AxiosError) {
+        const error = err.response?.status + " " + err.response?.data?.message || String(err.message);
+        setErrorMessage({ message: error, cause: "server" });
+        toast.error(error);
       }
     } finally {
       setLoading(false);
@@ -56,9 +73,9 @@ const Login = () => {
 
   return (
     <MotionScale immediate>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-7 justify-center min-h-[90vh]">
+      <form onSubmit={handleSubmit} className="flex flex-col items-center space-y-7 justify-center">
         {/* Login card */}
-        <Card className="w-[95%] max-w-xl">
+        <Card className="w-[90%] max-w-xl">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-bold">Welcome Back</CardTitle>
             <CardDescription className="text-md">

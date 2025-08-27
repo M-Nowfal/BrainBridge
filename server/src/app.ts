@@ -29,7 +29,7 @@ app.use("/api/resource", resourceRoutes);
 app.use((err: unknown, _req: Request, res: Response, next: NextFunction) => {
   const error = err instanceof Error ? err.message : String(err);
   console.error("Server Error:", error);
-  res.status(500).json({ message: "Internal Server Error", error });
+  res.status(500).json({ message: `Internal Server Error, ${error}` });
   next();
 });
 

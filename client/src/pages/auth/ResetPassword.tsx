@@ -6,7 +6,8 @@ import { matchPassword, passwordLen, validPassword } from "@/helpers/formValidat
 import axios from "axios";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, type NavigateFunction } from "react-router-dom";
+import { useLocation, useNavigate, type NavigateFunction } from "react-router-dom";
+import { toast } from "sonner";
 
 const ResetPassword = () => {
 
@@ -16,6 +17,7 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const refs = useRef<Record<string, HTMLInputElement | null>>({});
   const navigator: NavigateFunction = useNavigate();
+  const { authorized } = useLocation().state || false;
 
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,14 +47,17 @@ const ResetPassword = () => {
   };
 
   useEffect(() => {
-    
+    if (!authorized) {
+      toast.warning("Unauthorized, please login again");
+      navigator("/auth/login", { replace: true });
+    };
   }, []);
 
   return (
     <MotionScale immediate>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center min-h-[90vh]">
+      <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center">
         {/* Login card */}
-        <Card className="w-[95%] max-w-xl">
+        <Card className="w-[90%] max-w-xl">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-bold">Reset Password</CardTitle>
             <CardDescription className="text-md">

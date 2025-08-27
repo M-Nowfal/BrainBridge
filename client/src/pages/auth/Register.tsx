@@ -4,9 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import React, { useRef, useState } from "react";
-import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom";
 import { isValidationError, matchPassword, passwordLen, validateEmail, validateUsername, validPassword } from "@/helpers/formValidation";
+import { toast } from "sonner";
+import useOTP from "@/hooks/useOTP";
 
 type RegisterType = {
   name: string,
@@ -18,22 +19,16 @@ type RegisterType = {
 
 // Register Component
 const Register = () => {
-  // State to manage user credentials & terms agreement
   const [credentials, setCredentials] = useState<RegisterType>({
     name: "", email: "", password: "", confirm_pwd: "", terms_condition: false
   });
-
-  // State to toggle password visibility
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  // State to show error message
   const [errorMessage, setErrorMessage] = useState<any>("");
-
   const [loading, setLoading] = useState<boolean>(false);
-  const refs = useRef<Record<string, HTMLInputElement | null>>({});
-  const navigator: NavigateFunction = useNavigate();
+  const { sendOTPEmail } = useOTP();
 
-  // Dynamically updates form fields in state
+  const refs = useRef<Record<string, HTMLInputElement | null>>({});
+
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setErrorMessage("");
@@ -47,42 +42,35 @@ const Register = () => {
   // Handles form submission
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    validation();
+    window.sessionStorage.setItem("credentials", JSON.stringify(credentials));
+    await sendOTPEmail(credentials.email, "register", setLoading, setErrorMessage, "Registration", "/dashboard");
+  };
+
+  // Form Validation
+  const validation = () => {
     try {
-      setLoading(true);
-      validation();
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/register`, credentials);
-      if (res.status === 201) {
-        navigator("/dashboard", { state: { role: ``, /*some details*/ } });
-      }
+      if (!credentials.email.trim() || !validateEmail(credentials.email))
+        throw new Error("Please enter your email to reset password.", { cause: "email" });
+      validateUsername(credentials.name);
+      validateEmail(credentials.email);
+      passwordLen(credentials.password);
+      validPassword(credentials.password);
+      matchPassword(credentials.password, credentials.confirm_pwd);
     } catch (err: unknown) {
-      setErrorMessage(err);
       if (isValidationError(err)) {
-        const field = err.cause;
-        if (field && refs.current[field]) {
-          refs.current[field]?.focus();
-        }
+        setErrorMessage(err);
+        toast.error(err.message);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
-  // Validation logic
-  const validation = () => {
-    validateUsername(credentials.name);
-    validateEmail(credentials.email);
-    passwordLen(credentials.password);
-    validPassword(credentials.password);
-    matchPassword(credentials.password, credentials.confirm_pwd);
-  };
-
   return (
-    // Form container with scaling animation
     <MotionScale immediate>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center justify-center min-h-svh">
-        <Card className="w-[95%] max-w-xl lg:max-w-2xl">
+        className="flex flex-col items-center justify-center">
+        <Card className="w-[90%] max-w-xl lg:max-w-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Create Your Account</CardTitle>
             <CardDescription className="text-md">
@@ -215,11 +203,12 @@ const Register = () => {
               <Button
                 variant="themed"
                 className="text-lg py-6 lg:flex-1"
+                disabled={loading}
               >
                 {loading ? "Creating..." : "Create Account"}
               </Button>
               <Link
-                to={"/"}
+                to={loading ? "" : "/"}
                 className="lg:flex-1 text-lg py-2 rounded-md text-center border font-semibold transition-all duration-200 hover:border-gray-500"
               >
                 Cancel

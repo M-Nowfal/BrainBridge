@@ -48,7 +48,7 @@ export interface UserDocument extends Document {
   certificates: Certificate[];
   bookmarks: Bookmark[];
   notifications: Notification[];
-  themePreference: "light" | "dark";
+  themePrefered: "light" | "dark" | "system";
   isVerified: boolean;
   status: "active" | "inactive" | "banned";
   lastLogin?: Date;

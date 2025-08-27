@@ -10,7 +10,7 @@ import express, { Router } from "express";
 const userRoutes: Router = express.Router();
 
 // User routes
-userRoutes.route("/send-otp/:action").post(sendOTP);
+userRoutes.route("/send-otp/:otpfor").post(sendOTP);
 userRoutes.route("/verify-otp").post(verifyOTP);
 userRoutes.route("/register").post(registerUser);
 userRoutes.route("/login").post(loginUser);

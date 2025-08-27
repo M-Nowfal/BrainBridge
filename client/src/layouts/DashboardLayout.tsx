@@ -7,7 +7,7 @@ const DashboardLayout = () => {
   return (
     <>
       <div className="flex fixed items-center justify-between border-b p-4 top-0 w-full backdrop-blur-2xl z-10">
-        <Brand size="150" />
+        <Brand size={1.20} />
         <ThemeToggle />
       </div>
       <div className="mt-18 sm:mt-15">

@@ -1,13 +1,14 @@
 import { GraduationCap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Brand Component
 const Brand = ({
-  size = "100",
+  size = 1,
 }: {
-  size?: "50" | "75" | "90" | "95" | "100" | "105" | "110" | "125" | "150";
+  size?: number;
 }) => {
   return (
-    <div className={`flex items-center gap-2 scale-${size}`}>
+    <Link to={"/"} className={`flex items-center gap-2`} style={{ transform: `scale(${size})`}}>
       {/* Logo Icon: Gradient-styled graduation cap */}
       <GraduationCap className="bg-gradient-to-r from-sky-500 to-emerald-500 rounded-md p-1 size-8" />
       
@@ -15,7 +16,7 @@ const Brand = ({
       <h1 className="bg-gradient-to-r from-sky-500 to-emerald-500 bg-clip-text text-transparent font-bold text-xl">
         BrainBridge
       </h1>
-    </div>
+    </Link>
   );
 };
 

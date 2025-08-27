@@ -19,7 +19,7 @@ const VerifyOTP = (): JSX.Element => {
   const navigator: NavigateFunction = useNavigate();
 
   const location = useLocation();
-  const { email, action } = location.state;
+  const { email, action, purpose } = location.state;
 
   useEffect(() => {
     // Focus the first input on component mount
@@ -85,13 +85,27 @@ const VerifyOTP = (): JSX.Element => {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/user/verify-otp`, { email, otp: fullOtp });
       if (res.status === 200) {
         toast.success(res.data.message);
+        // Get the credentials from the session storage
+        const storedCredentials = window.sessionStorage.getItem("credentials");
+        if (!storedCredentials) {
+          toast.warning("Session expired. Please try again.");
+          window.history.back();
+          return;
+        }
+        const credentials = JSON.parse(storedCredentials);
+        // Call the respected API for purpose
+        const authResponse = await axios.post(`${import.meta.env.VITE_API_URL}/user/${purpose}`, credentials);
+        // Store the userid in local storage to get user profile in dashboard
+        window.localStorage.setItem("user", JSON.stringify({ id: authResponse.data?.userid }));
         navigator(`${action}`, { state: { email, authorized: true }, replace: true });
       }
     } catch (err: unknown) {
-      const error = err instanceof AxiosError ? err.message : String(err);
+      const error = err instanceof AxiosError ? `${err.response?.status} ${err.response?.data?.message}` : String(err);
       setErrorMessage({ message: error, cause: "server" });
+      console.error(err);
     } finally {
       setLoading(false);
+      window.sessionStorage.clear(); // Clear the session storage
     }
   };
 
@@ -127,9 +141,8 @@ const VerifyOTP = (): JSX.Element => {
   };
 
   return (
-    <MotionScale immediate className="flex items-center justify-center min-h-[85vh] px-4">
+    <MotionScale immediate className="flex items-center justify-center px-4">
       <Card className="w-full max-w-md shadow-xl rounded-2xl border overflow-hidden">
-
         <CardHeader className="text-center space-y-2">
           <div className="flex justify-center items-center gap-5 p-2">
             <LockKeyhole className="h-8 w-8 text-emerald-600" />
