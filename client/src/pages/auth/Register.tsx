@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate, type NavigateFunction } from "react-router-dom";
 import axios from "axios";
 import { isValidationError, matchPassword, passwordLen, validateEmail, validateUsername, validPassword } from "@/helpers/formValidation";
